@@ -28,6 +28,23 @@ namespace Console_POS
             Console.WriteLine("[5] Exit");
             Console.WriteLine("==============================");
             Console.Write("Please select an option: ");
+
+            int option;
+            int.TryParse(Console.ReadLine(), out option);
+            return option;
+        }
+
+        static void DisplayMenu()
+        {
+            Console.Clear();
+            Console.WriteLine("-------------------------------");
+            Console.WriteLine("            MENU");
+            Console.WriteLine("-------------------------------");
+
+            for (int i = 0; i < items.Length; i++)
+                Console.WriteLine($" [{i + 1}] {items[i],-15} P{prices[i]}");
+
+            Console.WriteLine("-------------------------------");
         }
     }
 }

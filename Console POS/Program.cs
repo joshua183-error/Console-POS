@@ -54,26 +54,23 @@ namespace Console_POS
                         // Add Item
                         AddItemToCart();
                         break;
-
                     case 2:
                         // Remove Item
-                        RemoveItemFromCart();
                         break;
 
                     case 3:
-                        // View Cart
                         ViewCart();
+                        // View Cart
                         break;
 
                     case 4:
                         // Checkout
-                        Checkout();
                         break;
-
                     case 5:
                         // Exit
                         Console.WriteLine("Exiting the program. Goodbye!");
                         return;
+
 
                     default:
                         Console.WriteLine("Invalid option. Please try again.");
@@ -84,17 +81,18 @@ namespace Console_POS
             }
         }
 
-        private static void DisplayMenu()
+
+        private static int DisplayMenu()
         {
             Console.Clear();
             Console.WriteLine("-------------------------------");
             Console.WriteLine("    Welcome to the POS System  ");
             Console.WriteLine("-------------------------------");
-            Console.WriteLine("[1] Add Item");
-            Console.WriteLine("[2] Remove Item");
-            Console.WriteLine("[3] View Cart");
-            Console.WriteLine("[4] Checkout");
-            Console.WriteLine("[5] Exit");
+            Console.WriteLine(" [1] Add Item");
+            Console.WriteLine(" [2] Remove Item");
+            Console.WriteLine(" [3] View Cart");
+            Console.WriteLine(" [4] Checkout");
+            Console.WriteLine(" [5] Exit");
             Console.WriteLine("==============================");
             Console.Write("Please select an option: ");
 
@@ -103,7 +101,7 @@ namespace Console_POS
             return option;
         }
 
-        static void DisplayMenu()
+        static void DisplayItems()
         {
             Console.Clear();
             Console.WriteLine("-------------------------------");
@@ -114,6 +112,70 @@ namespace Console_POS
                 Console.WriteLine($" [{i + 1}] {items[i],-15} P{prices[i]}");
 
             Console.WriteLine("-------------------------------");
+
         }
+
+
+        static void AddItemToCart()
+        {
+            DisplayItems();
+            Console.WriteLine("Choose Item:");
+            int choice;
+
+            if (!int.TryParse(Console.ReadLine(), out choice) || choice < 1 || choice > items.Length)
+            {
+                Console.WriteLine("Invalid choice. Please try again.");
+                return;
+            }
+
+            Console.WriteLine("Quantity:");
+            int quantity;
+
+            if (!int.TryParse(Console.ReadLine(), out quantity) || quantity <= 0)
+            {
+                Console.WriteLine("Invalid quantity. Please try again.");
+                return;
+            }
+
+            for (int i = 0; i < items.Length; i++)
+            {
+                if (i == choice - 1)
+                {
+                    cartItems[i] = items[i];
+                    cartQuantities[i] = quantity;
+                    break;
+                }
+            }
+
+            Console.WriteLine($"Added {items[choice - 1]} to the cart.");
+        }
+
+
+        static void ViewCart()
+        {
+            Console.Clear();
+            Console.WriteLine("-------------------------------");
+            Console.WriteLine("            CART");
+            Console.WriteLine("-------------------------------");
+
+            decimal total = 0;
+
+            for (int i = 0; i < cartItems.Length; i++)
+            {
+                if (!string.IsNullOrEmpty(cartItems[i]))
+                {
+                    decimal itemTotal = prices[i] * cartQuantities[i];
+                    total += itemTotal;
+                    Console.WriteLine($" {cartItems[i],-15} x{cartQuantities[i],-5} - P{itemTotal}");
+                }
+            }
+
+            Console.WriteLine("-------------------------------");
+            Console.WriteLine($" Total: P{total}");
+            Console.ReadKey();
+
+        }
+
     }
+
 }
